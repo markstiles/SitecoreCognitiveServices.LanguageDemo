@@ -1,0 +1,6 @@
+LanguageDemo.Web/.vs/
+LanguageDemo.Web/LanguageDemo.Web/bin/
+LanguageDemo.Web/LanguageDemo.Web/obj/
+LanguageDemo.Web/packages/
+LanguageDemo.Web/LanguageDemo.Web/Properties/PublishProfiles/
+*.user

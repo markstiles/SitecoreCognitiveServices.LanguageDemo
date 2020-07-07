@@ -1,0 +1,15 @@
+﻿@using Sitecore.Mvc
+@model LanguageDemo.Web.Areas.LanguageDemo.Models.Pages.IHomeViewModel
+
+@{ 
+    var className = Model.PageContext.Item.TemplateName.Replace(" ", "").ToLower();
+}
+
+<div class="@className page-header">
+    <div class="image">
+        @Html.Sitecore().Field("Image")
+    </div>
+    <h1>
+        @Html.Sitecore().Field("Title")
+    </h1>
+</div>

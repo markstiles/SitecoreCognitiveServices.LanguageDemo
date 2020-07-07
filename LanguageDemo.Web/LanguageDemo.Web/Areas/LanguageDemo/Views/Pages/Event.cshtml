@@ -1,0 +1,17 @@
+﻿@using Sitecore.Mvc
+@model LanguageDemo.Web.Areas.LanguageDemo.Models.Pages.IEventViewModel
+
+<div class="event-details page-container">
+    <div class="event-cost">
+        @Model.EventCost
+    </div>
+    <div class="event-location">
+        @Model.GetFieldValue(Model.PageContext.Item, "Location")
+    </div>
+    <div class="event-date">
+        @Model.GetFormattedDate(Model.PageContext.Item, "Date", "MMMM d, yyyy")
+    </div>
+    <div class="content">
+        @Html.Sitecore().Field("Content")
+    </div>
+</div>

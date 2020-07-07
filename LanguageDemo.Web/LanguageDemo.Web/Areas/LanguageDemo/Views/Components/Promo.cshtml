@@ -1,0 +1,18 @@
+﻿@using Sitecore.Mvc
+@model LanguageDemo.Web.Areas.LanguageDemo.Models.Components.IPromoViewModel
+
+@if (Model.DatasourceItem == null) {
+    return;
+}
+
+<div class="promo">
+    <div class="promo-title">
+        @Html.Sitecore().Field("Title", Model.DatasourceItem)
+    </div>
+    <div class="promo-content">
+        @Html.Sitecore().Field("Content", Model.DatasourceItem)
+    </div>
+    <div class="promo-link">
+        @Html.Sitecore().Field("Call To Action", Model.DatasourceItem)
+    </div>
+</div>

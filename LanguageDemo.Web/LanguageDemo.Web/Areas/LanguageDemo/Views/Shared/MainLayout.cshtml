@@ -1,0 +1,49 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Analytics.Extensions
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>@Html.Sitecore().Field("title", new { DisableWebEdit = true })</title>
+    @Html.Sitecore().VisitorIdentification()
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <link href="/Areas/LanguageDemo/Assets/css/LanguageDemo.css?x=@(new System.Random().Next())" rel="stylesheet" type="text/css" />
+    <script src="~/sitecore/shell/Controls/Lib/jQuery/jquery-1.10.2.min.js"></script>
+    <script src="~/Areas/LanguageDemo/Assets/js/global-search.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/">
+                <img src="~/Areas/LanguageDemo/Assets/images/kids.gif" />
+                <span>Fun Stuff 4 Kids</span>
+            </a>
+        </div>
+        <div class="main-nav">
+            <a href="/events">Events</a>|<a href="/membership">Membership</a>|<a href="/tickets">Tickets</a>|<a href="/parent community">Community</a>|<a href="/search">Search</a>
+        </div>
+        <div class="utility-nav">
+            <a href="">Login</a>|<a href="">Contact Us</a>|<a href="">Privacy</a>
+        </div>
+        <div class="global-search-box">
+            <form action="/search" method="get" id="global-search-form">
+                <input type="text" id="global-search-text" name="q" />
+                <button type="submit" id="global-search-submit" value="Search" />
+            </form>
+        </div>
+    </header>
+    @*<h1>@Html.Sitecore().Field("title")</h1>*@
+    <div class="content-wrapper">
+        <div class="main-content">
+            @Html.Sitecore().Placeholder("main")
+        </div>
+    </div>
+    <footer>
+        <div class="foot-nav">
+            <a href="/events">Events</a>|<a href="">Membership</a>|<a href="">Tickets</a>|<a href="">Community</a>|<a href="">Contact Us</a>|<a href="">Privacy</a>
+        </div>
+    </footer>
+</body>
+</html>

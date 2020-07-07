@@ -1,0 +1,29 @@
+﻿@using Sitecore.Mvc
+@model LanguageDemo.Web.Areas.LanguageDemo.Models.Pages.ISearchViewModel
+
+<script src="~/Areas/LanguageDemo/Assets/js/search.js"></script>
+
+@Model.GetFieldValue(Model.PageContext.Item, "Content")
+<a name="search-top"></a>
+<div class="page-container">
+    <div class="frame search-form">
+        <form class="form" method="post" action="/LanguageDemo/Search/SearchFormLuisPost">
+            <fieldset>
+                <div class="dialog-state">
+                    <div class="value"></div>
+                    <div class="cancel">&#10006;</div>
+                </div>
+                <div class="dialog-wrap">
+                    <div class="search-chat"></div>
+                    <input class="search-input" type="text" />
+                    <button class="search-submit scButton">Submit</button>
+                </div>
+                <div class="search-context">
+                    <input type="hidden" name="id" id="id" value="@Model.Rendering.DataSource" />
+                    <input type="hidden" name="db" id="db" value="web" />
+                    <input type="hidden" name="language" id="language" value="@Request.QueryString["language"]" />
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+﻿@using Sitecore.Mvc
+@model LanguageDemo.Web.Areas.LanguageDemo.Models.Pages.IEventListViewModel
+
+<div class="event-list page-container">
+    <div class="content">
+        @Html.Sitecore().Field("Content")
+    </div>
+    <div class="events">
+        @foreach (var ev in Model.Events)
+        {
+            <div class="event-result">
+                <div class="event-result-title">
+                    <a href="@Model.GetLink(ev)">
+                        @Model.GetFieldValue(ev, "Title")
+                    </a>
+                </div>
+                <div class="event-result-date">
+                    @Model.GetFormattedDate(ev, "Date", "MMMM d, yyyy")
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,136 @@
+﻿body { font-family: 'Raleway', sans-serif; color:#333; margin:0px; }
+    header { position:relative; height: 140px; border-bottom: 1px solid #ccc; }
+        header.hover { position:fixed; height:30px; width:100%; background:#fff; z-index:2; opacity:0.8; }
+        header.hover .main-nav { top:2px; }
+        header.hover .utility-nav,
+        header.hover .logo,
+        header.hover .global-search-box { display:none; }
+        .logo { position:absolute; top:10px; left:142px;}
+            .logo a { display:block; color:#333; text-decoration:none; }
+            .logo img { width:130px; display:inline-block; vertical-align:middle; }
+            .logo span { display:inline-block; vertical-align:middle; font-size: 32px; margin-left: 15px; font-weight: bold; }
+        .main-nav { position: absolute; bottom: 20px; right: 480px; }
+            .main-nav a { text-decoration:none; color:#333; margin:0 12px; font-size:20px; }
+            .main-nav a:hover { color:#33ccff; }
+        .utility-nav { position: absolute; top: 5px; right:35px; } 
+            .utility-nav a { font-size: 12px; color: #333; text-decoration: none; margin:0 5px; }
+            .utility-nav a:hover { color:#33ccff; }
+        .global-search-box { position: absolute; bottom: 17px; right: 20px; }
+            .global-search-box input { width: 380px; height: 28px; border-radius: 4px; border: 1px solid #888; padding: 0 7px; font-size: 16px; }
+            .global-search-box input:focus { box-shadow: inset 0px 0px 6px #ddd; }
+            .global-search-box button { display:none; }
+    .content-wrapper { }
+        .main-content { position:relative; }
+        .page-header { position:relative; height: 240px; overflow: hidden; margin-bottom:30px; }
+            .page-header h1 { position: absolute; color: #333; top: 65px; text-align: center; width: 100%; font-size: 100px; margin: 0; }
+        .page-container { width: 60%; margin: 0px auto; }
+            .content { line-height:27px; }
+            .content a { color:#0086b3; }
+            .content a:hover { color:#33ccff; }
+            .image { position: relative; top: 0; right: 0; left: 0; bottom: 0; opacity:0.4; }
+                .image img { width: 100%; height: auto; }
+
+    .eventpage.page-header { height:336px; }
+    .event-list {}
+        .event-list .image {}
+        .event-list .image img { height:210px; }
+        .events { text-align:center; }
+        .event-result { margin-bottom:10px; }
+            .event-result-title { font-weight:bold; display:inline-block; font-size:22px; }
+            .event-result-title a { color:#0086b3;  }
+            .event-result-date { font-weight:bold; }
+            .event-date { font-size:20px; font-weight:bold; color:red; margin-bottom:3px; }
+            .event-location { font-style:italic; font-weight:bold; font-size:20px; }
+            .event-cost { font-size:30px; font-weight:bold; }
+    .search { height:540px; }
+        .search h1 { text-align:center; margin:50px 0 0; font-size:45px; }
+            .search-form {  }
+            .search-form form {  }
+            .search-form fieldset { border: 0; width: 650px; margin: 0 auto; }
+            .search-input { width: 624px; font-size: 16px; font-size: 16px; height: 28px; border-radius: 4px; border: 1px solid #888; padding: 0 7px;}
+            .search-submit { display: none; background-color: #ccc; border-radius: 0px; border: 0; height: 34px; vertical-align: top; }
+            .search-form .dialog-state { padding: 4px 8px; border-radius: 4px; margin: 5px 5px 0 0; display: none; text-transform: capitalize; font-size: 16px; }
+            .search-form .dialog-state .key,
+            .search-form .dialog-state .value,
+            .search-form .dialog-state .cancel { display:inline-block; }
+            .search-form .dialog-state .value { font-weight:bold; }
+            .search-form .dialog-state .cancel { cursor:pointer; }
+            .search-form .dialog-state { background-color: red; color: #fff; border-radius: 4px 4px 0 0; margin-bottom: -4px; padding-bottom:8px; font-size:19px; }
+            .search-form .dialog-state.show { display:inline-block; }
+            .search-form .dialog-wrap { padding: 4px 12px 12px 12px; position:relative; }
+            .search-form .dialog-wrap.show { background-color: red; color: #fff; border-radius: 4px; }
+            .search-form .search-chat { margin: 8px 0 10px 0; font-size: 15px; transition: opacity 0.5s; opacity: 0; }
+
+            .search-results-frame { margin-top:20px; }
+            .search-results-frame .result-wrap { margin: 0 auto; }
+            .search-results-frame .list-panel { width: 638px; margin: 0px auto; }
+            .result-wrap { width: 100%; margin-top: 30px; }
+            .result-count { display:none; margin-bottom: 25px; font-weight: bold; color: #fff; font-size: 23px; background-color: #ff0000; padding: 5px 10px; border-radius: 6px; }
+            .search-results { height: 496px; overflow: auto; }
+            .search-no-results { display:none; font-size: 16px; font-weight: bold; text-align: center; }
+            .result-item { margin-bottom: 20px; }
+            .result-item .title { font-size: 25px; color: #333; margin-bottom:2px; }
+            .result-item .title a { color: red; text-decoration:none; }
+            .result-item .title a:hover { text-decoration:underline; }
+            .result-item .link { color: #333; margin-bottom: 5px; display:block; }
+            .result-item .date { font-style:italic; font-weight:bold; }
+            .result-item .cost,
+            .result-item .location, 
+            .result-item .age-range { display:inline-block; margin-right:10px; font-weight:bold; }
+            .result-item .cost span,
+            .result-item .location span,
+            .result-item .age-range span { font-weight:normal; }
+            .result-item .description { color:#ccc; }
+            .result-item .description p { margin:0; }
+            .progress-indicator { display: none; width: 32px; margin: 0 auto; position: absolute; top: 600px; right: 0px; left: 0; }
+
+    .promo { width: 604px; margin: 0px auto; background: red; color: #fff; padding: 15px 30px; border-radius: 10px; }
+        .promo-title { font-size:25px; font-weight:bold; }
+        .promo-content { margin:6px 0; }
+        .promo-content a {  color: #64EAD8; }
+        .promo-link { }
+            .promo-link a { background: #64EAD8; color: #444; letter-spacing: 1px; font-weight: bold; padding: 5px 10px; border-radius: 5px; display: inline-block; margin-top: 16px; text-decoration: none; }
+            .promo-link a:hover { color:#fff; }
+
+    .ticket-list { }
+        .ticket-detail { vertical-align:top; display: inline-block; width: 415px; border: 2px solid #ccc; background: #eee; border-radius: 4px; margin: 5px; padding: 10px 10px; }
+        .ticket-title { display:inline-block; font-weight:bold; }
+        .ticket-cost { display:inline-block; font-weight:bold; font-style:italic; }
+        .ticket-date { margin:5px 0; }
+        .ticket-link { text-align:right; }
+        .ticket-link a { color: white; font-weight: bold; display:inline-block; background: red; border-radius: 4px; padding: 8px; text-decoration: NONE; }
+
+    .ranking-form { }
+        .ranking-form fieldset { border:none; padding:0px; margin:0px 0 25px; }
+        .reward-settings { }
+            .reward-settings select { display: block; width: 150px; margin-bottom: 10px; padding: 5px 10px; }
+                .reward-settings option { } 
+            #time-of-day { }
+            #taste { }
+        .form-fields { display:inline-block; width:150px; margin-right:20px; }
+        .ranked-content { display:inline-block; width:400px; vertical-align:top; }
+            .ranked-content label { font-weight:bold; } 
+            .event-id { }
+            .reward-action-id { }
+            .ranking-form .result-wrap { }
+            .rank-item { padding:10px; }
+                .rank-item.odd { background:#eee; }
+                .rank-item.even { border:1px solid #eee; }
+            .item-id { font-weight:bold; }
+            .item-probability { }
+        .ranking-form input#reward-value { width:126px; margin-bottom:10px; padding:5px 10px; }
+        .submit-wrap { }
+            .ranking-form button { width: 150px; background: red; border: none; padding: 5px 10px; color: #fff; border-radius: 4px; margin-bottom:10px; }
+            button.ranking-submit  { }
+            button.reward-submit { }
+        .ranking-form .progress-indicator { top:375px; left:170px; }
+
+footer {
+    height: 20px;
+    padding: 10px;
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+}
+        .foot-nav { position:absolute; right:30px; }
+            .foot-nav a { text-decoration:none; color:#333; margin:0 5px; font-size:12px; }
+            .foot-nav a:hover { color:#33ccff; }

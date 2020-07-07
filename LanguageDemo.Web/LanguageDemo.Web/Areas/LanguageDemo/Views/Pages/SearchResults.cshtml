@@ -1,0 +1,24 @@
+﻿@using Sitecore.Mvc
+@model LanguageDemo.Web.Areas.LanguageDemo.Models.Pages.ISearchViewModel
+
+@Model.GetFieldValue(Model.PageContext.Item, "Content")
+<div class="search page-container">
+    <div class="frame search-results-frame">
+        <div class="result-wrap">
+            <div class="list-panel">
+                <div class="result-count">
+
+                </div>
+                <div class="search-no-results">
+                    There are no results.
+                </div>
+                <div class="search-results">
+
+                </div>
+            </div>
+        </div>
+        <div class="progress-indicator">
+            <img src="/sitecore/shell/themes/standard/Images/ProgressIndicator/sc-spinner32.gif" />
+        </div>
+    </div>
+</div>

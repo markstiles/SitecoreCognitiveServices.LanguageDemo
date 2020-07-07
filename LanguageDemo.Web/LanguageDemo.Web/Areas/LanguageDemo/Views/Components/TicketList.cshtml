@@ -1,0 +1,27 @@
+﻿@using Sitecore.Mvc
+@model LanguageDemo.Web.Areas.LanguageDemo.Models.Pages.IEventListViewModel
+
+<div class="ticket-list page-container">
+    @foreach (var ev in Model.Events)
+    {
+        var c = Model.GetFieldValue(ev, "Cost");
+        var eventCost = (c == "0") ? "Free" : "$" + c;
+
+        <div class="ticket-detail">
+            <div class="ticket-title">
+                @Model.GetFieldValue(ev, "Title")&nbsp;-&nbsp;
+            </div>
+            <div class="ticket-cost">
+                @eventCost
+            </div>
+            <div class="ticket-date">
+                @Model.GetFormattedDate(ev, "Date", "MMMM d, yyyy")
+            </div>
+            <div class="ticket-link">
+                <a href="/tickets/purchase confirmation">
+                    Buy Now
+                </a>
+            </div>
+        </div>
+    }
+</div>

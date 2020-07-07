@@ -1,0 +1,69 @@
+﻿@using Sitecore.Mvc
+@model LanguageDemo.Web.Areas.LanguageDemo.Models.Components.IRankedContentViewModel
+
+@{
+    string[] timeOfDayFeatures = new string[] { "morning", "afternoon", "evening", "night" };
+    string[] tasteFeatures = new string[] { "salty", "sweet", "savory", "bland" };
+}
+
+<script src="~/Areas/LanguageDemo/Assets/js/ranking.js"></script>
+
+<div class="page-container">
+    <div class="frame ranking-form">
+        <form class="form" method="post"
+              action="/LanguageDemo/Rank/GetRanking"
+              reward-action="/LanguageDemo/Rank/RewardEvent"
+              train-action="/LanguageDemo/Rank/TrainRanking">
+            <div class="form-fields">
+                <fieldset>
+                    <div class="reward-settings">
+                        <select id="time-of-day">
+                            @foreach (var tod in timeOfDayFeatures)
+                            {
+                                <option value="@tod">@tod</option>
+                            }
+                        </select>
+                        <select id="taste">
+                            @foreach (var t in tasteFeatures)
+                            {
+                                <option value="@t">@t</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="submit-wrap">
+                        <button class="ranking-submit scButton">Get Ranking</button>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div>
+                        <input id="reward-value" value="0.0" />
+                    </div>
+                    <div class="submit-wrap">
+                        <button class="reward-submit scButton">Reward</button>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="submit-wrap">
+                        <button class="train-submit scButton">Train</button>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ranked-content">
+                <div class="event-id">
+                    <label>EventId: </label>
+                    <span></span>
+                </div>
+                <div class="reward-action-id">
+                    <label>RewardActionId: </label>
+                    <span></span>
+                </div>
+                <div class="result-wrap">
+
+                </div>
+            </div>
+        </form>
+        <div class="progress-indicator">
+            <img src="/sitecore/shell/themes/standard/Images/ProgressIndicator/sc-spinner32.gif" />
+        </div>
+    </div>
+</div>
