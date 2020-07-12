@@ -37,6 +37,8 @@ namespace LanguageDemo.Web.App_Start
             serviceCollection.AddTransient<IViewModelFactory, ViewModelFactory>();
 
             //services
+            serviceCollection.AddTransient<ITrainingService, TrainingService>();
+            serviceCollection.AddTransient<IActionService, ActionService>();
             serviceCollection.AddTransient<IUrlService, UrlService>();
             serviceCollection.AddTransient<IEventSearchService, EventSearchService>();
             

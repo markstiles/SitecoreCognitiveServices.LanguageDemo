@@ -26,10 +26,17 @@ namespace LanguageDemo.Web.Controllers
         #region Constructor
 
         protected readonly IPersonalizerService PersonalizerService;
+        protected readonly IActionService ActionService;
+        protected readonly ITrainingService TrainingService;
 
-        public RankController(IPersonalizerService personalizerService)
+        public RankController(
+            IPersonalizerService personalizerService,
+            IActionService actionService,
+            ITrainingService trainingService)
         {
             PersonalizerService = personalizerService;
+            ActionService = actionService;
+            TrainingService = trainingService;
         }
 
         #endregion
@@ -40,7 +47,7 @@ namespace LanguageDemo.Web.Controllers
         {
             var request = new RankRequest
             {
-                actions = GetActions(),
+                actions = ActionService.GetActions(),
                 contextFeatures = new List<object>() {
                     new { time = timeOfDayFeature },
                     new { taste = tasteFeature }
@@ -57,71 +64,25 @@ namespace LanguageDemo.Web.Controllers
 
             return Json(new { Response = response });
         }
-
-        public ActionResult TrainRanking()
+        
+        public ActionResult TrainOneDimension(string dimensionOne)
         {
-            string[] timeOfDayFeatures = new string[] { "morning", "afternoon", "evening", "night" };
-            string[] tasteFeatures = new string[] { "salty", "sweet", "savory", "bland" };
-            
-            var rewardCount = 0;
-            var rankResponse = new RankResponse();
-            for (int j = 0; j < 10000; j++)
-            {
-                var tod = timeOfDayFeatures[j % 4];
-                var t = "";
-                if (tod == "morning")
-                    t = "sweet";
-                else if (tod == "afternoon")
-                    t = "bland";
-                else if (tod == "evening")
-                    t = "salty";
-                else if (tod == "night")
-                    t = "savory";
-                
-                var request = new RankRequest
-                {
-                    actions = GetActions(),
-                    contextFeatures = new List<object>() {
-                                new { time = tod },
-                                new { taste = t }
-                            },
-                    excludedActions = new List<string>(),
-                    eventId = Guid.NewGuid().ToString(),
-                    deferActivation = false
-                };
+            TrainingService.TrainOneDimension(dimensionOne);
 
-                // Rank the actions
-                rankResponse = PersonalizerService.Rank(request);
+            return Json(new { /*return training values 2000 clicks = 10% confidence, 3000 clicks = 18% confidence */});
+        }
 
-                var isJuice = rankResponse.rewardActionId == "juice";
-                var isIceCream = rankResponse.rewardActionId == "ice cream";
-                var isSalad = rankResponse.rewardActionId == "salad";
-                var isPasta = rankResponse.rewardActionId == "pasta";
-                var isMorning = tod == "morning";
-                var isAfternoon = tod == "afternoon";
-                var isEvening = tod == "evening";
-                var isNight = tod == "night";
+        public ActionResult TrainTwoDimensions(string dimensionOne, string dimensionTwo)
+        {
+            TrainingService.TrainTwoDimensions(dimensionOne, dimensionTwo);
 
-                PersonalizerService.ActivateEvent(rankResponse.eventId);
+            return Json(new { });
+        }
 
-                if (isMorning && isJuice)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else if (isAfternoon && isSalad)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else if (isEvening && isPasta)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else if (isNight && isIceCream)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else
-                    PersonalizerService.Reward(rankResponse.eventId, 0);
-            }
-            
-            Sitecore.Diagnostics.Log.Info($"RankController Reward Count: {rewardCount}", this);
-            foreach (var j in rankResponse.ranking)
-            {
-                Sitecore.Diagnostics.Log.Info($"RankController Ranking: {j.id} - {j.probability}", this);
-            }
-            
+        public ActionResult TrainThreeDimensions(string dimensionOne, string dimensionTwo, string dimensionThree)
+        {
+            TrainingService.TrainThreeDimensions(dimensionOne, dimensionTwo, dimensionThree);
+
             return Json(new { });
         }
 
@@ -133,78 +94,6 @@ namespace LanguageDemo.Web.Controllers
             {
                 Failed = false
             });
-        }
-        
-        static List<RankableAction> GetActions()
-        {
-            List<RankableAction> actions = new List<RankableAction>
-            {
-                new RankableAction
-                {
-                    id = "pasta",
-                    features =
-                    new List<object>() {
-                        new {
-                            taste = "salty",
-                            spiceLevel = "medium"
-                        },
-                        new {
-                            nutritionLevel = 5,
-                            cuisine = "italian"
-                        }
-                    }
-                },
-
-                new RankableAction
-                {
-                    id = "ice cream",
-                    features  =
-                    new List<object>() {
-                        new {
-                            taste = "savory",
-                            spiceLevel = "none"
-                        },
-                        new {
-                            nutritionalLevel = 2
-                        }
-                    }
-                },
-
-                new RankableAction
-                {
-                    id = "juice",
-                    features  =
-                    new List<object>() {
-                        new {
-                            taste = "sweet",
-                            spiceLevel = "none"
-                        },
-                        new {
-                            nutritionLevel = 5
-                        },
-                        new {
-                            drink = true
-                        }
-                    }
-                },
-
-                new RankableAction
-                {
-                    id = "salad",
-                    features  =
-                    new List<object>() {
-                        new {
-                            taste = "bland",
-                            spiceLevel = "low"
-                        },
-                        new {
-                            nutritionLevel = 8
-                        }
-                    }
-                }
-            };
-
-            return actions;
         }
         
         #endregion

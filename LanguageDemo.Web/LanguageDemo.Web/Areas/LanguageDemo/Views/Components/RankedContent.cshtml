@@ -2,8 +2,10 @@
 @model LanguageDemo.Web.Areas.LanguageDemo.Models.Components.IRankedContentViewModel
 
 @{
-    string[] timeOfDayFeatures = new string[] { "morning", "afternoon", "evening", "night" };
-    string[] tasteFeatures = new string[] { "salty", "sweet", "savory", "bland" };
+    List<string> timeOfDayFeatures = Constants.Dimensions.TimeOfDayFeatures;
+    List<string> tasteFeatures = Constants.Dimensions.PageLocationFeatures;
+
+    var dimensionSet = new[] { Constants.Dimensions.TimeOfDay, Constants.Dimensions.PageLocation, Constants.Dimensions.ContentType };
 }
 
 <script src="~/Areas/LanguageDemo/Assets/js/ranking.js"></script>
@@ -12,8 +14,7 @@
     <div class="frame ranking-form">
         <form class="form" method="post"
               action="/LanguageDemo/Rank/GetRanking"
-              reward-action="/LanguageDemo/Rank/RewardEvent"
-              train-action="/LanguageDemo/Rank/TrainRanking">
+              reward-action="/LanguageDemo/Rank/RewardEvent">
             <div class="form-fields">
                 <fieldset>
                     <div class="reward-settings">
@@ -57,6 +58,93 @@
                     <label>RewardActionId: </label>
                     <span></span>
                 </div>
+                <div class="result-wrap">
+
+                </div>
+            </div>
+        </form>
+        <form class="one-dimension-form"
+              train-action="/LanguageDemo/Rank/TrainOneDimension">
+            <div class="form-fields">
+                <fieldset>
+                    <select id="dimension-one">
+                        @foreach (var d in dimensionSet)
+                        {
+                            <option value="@d">@d</option>
+                        }
+                    </select>
+                </fieldset>
+                <fieldset>
+                    <div class="submit-wrap">
+                        <button class="train-submit scButton">Train One Dimension</button>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ranked-content">
+                <div class="result-wrap">
+
+                </div>
+            </div>
+        </form>
+        <form class="two-dimension-form"
+              train-action="/LanguageDemo/Rank/TrainTwoDimensions">
+            <div class="form-fields">
+                <fieldset>
+                    <select id="dimension-one">
+                        @foreach (var d in dimensionSet)
+                        {
+                            <option value="@d">@d</option>
+                        }
+                    </select>
+                    <select id="dimension-two">
+                        @foreach (var d in dimensionSet)
+                        {
+                            <option value="@d">@d</option>
+                        }
+                    </select>
+                </fieldset>
+                <fieldset>
+                    <div class="submit-wrap">
+                        <button class="train-submit scButton">Train Two Dimensions</button>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ranked-content">
+                <div class="result-wrap">
+
+                </div>
+            </div>
+        </form>
+        <form class="three-dimension-form"
+              train-action="/LanguageDemo/Rank/TrainThreeDimensions">
+            <div class="form-fields">
+                <fieldset>
+                    <select id="dimension-one">
+                        @foreach (var d in dimensionSet)
+                        {
+                            <option value="@d">@d</option>
+                        }
+                    </select>
+                    <select id="dimension-two">
+                        @foreach (var d in dimensionSet)
+                        {
+                            <option value="@d">@d</option>
+                        }
+                    </select>
+                    <select id="dimension-three">
+                        @foreach (var d in dimensionSet)
+                        {
+                            <option value="@d">@d</option>
+                        }
+                    </select>
+                </fieldset>
+                <fieldset>
+                    <div class="submit-wrap">
+                        <button class="train-submit scButton">Train Three Dimensions</button>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="ranked-content">
                 <div class="result-wrap">
 
                 </div>
