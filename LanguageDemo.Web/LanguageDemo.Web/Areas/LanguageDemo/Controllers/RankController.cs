@@ -65,25 +65,25 @@ namespace LanguageDemo.Web.Controllers
             return Json(new { Response = response });
         }
         
-        public ActionResult TrainOneDimension(string dimensionOne)
+        public ActionResult TrainOneDimension()
         {
-            TrainingService.TrainOneDimension(dimensionOne);
+            var results = TrainingService.TrainOneDimension();
 
-            return Json(new { /*return training values 2000 clicks = 10% confidence, 3000 clicks = 18% confidence */});
+            return Json(new { results });
         }
 
-        public ActionResult TrainTwoDimensions(string dimensionOne, string dimensionTwo)
+        public ActionResult TrainTwoDimensions()
         {
-            TrainingService.TrainTwoDimensions(dimensionOne, dimensionTwo);
+            var results = TrainingService.TrainTwoDimensions();
 
-            return Json(new { });
+            return Json(new { results });
         }
 
-        public ActionResult TrainThreeDimensions(string dimensionOne, string dimensionTwo, string dimensionThree)
+        public ActionResult TrainThreeDimensions()
         {
-            TrainingService.TrainThreeDimensions(dimensionOne, dimensionTwo, dimensionThree);
+            var results = TrainingService.TrainThreeDimensions();
 
-            return Json(new { });
+            return Json(new { results });
         }
 
         public ActionResult RewardEvent(string eventId, float reward)

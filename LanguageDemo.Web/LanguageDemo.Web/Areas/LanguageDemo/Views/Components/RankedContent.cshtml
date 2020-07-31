@@ -2,10 +2,15 @@
 @model LanguageDemo.Web.Areas.LanguageDemo.Models.Components.IRankedContentViewModel
 
 @{
-    List<string> timeOfDayFeatures = Constants.Dimensions.TimeOfDayFeatures;
-    List<string> tasteFeatures = Constants.Dimensions.PageLocationFeatures;
+    List<string> timeOfDayFeatures = Constants.Dimensions.ContextFeatures.TimeOfDayFeatureList;
+    List<string> tasteFeatures = Constants.Dimensions.ContextFeatures.PageLocationFeatureList;
 
-    var dimensionSet = new[] { Constants.Dimensions.TimeOfDay, Constants.Dimensions.PageLocation, Constants.Dimensions.ContentType };
+    var dimensionSet = new[] {
+        Constants.Dimensions.ContextFeatures.TimeOfDayFeatureList,
+        Constants.Dimensions.ContextFeatures.PageLocationFeatureList,
+        Constants.Dimensions.ContextFeatures.PageTopicFeatureList,
+        Constants.Dimensions.ContextFeatures.UserProfileFeatureList
+    };
 }
 
 <script src="~/Areas/LanguageDemo/Assets/js/ranking.js"></script>
@@ -67,16 +72,16 @@
               train-action="/LanguageDemo/Rank/TrainOneDimension">
             <div class="form-fields">
                 <fieldset>
+                    <legend>One Dimension</legend>
                     <select id="dimension-one">
-                        @foreach (var d in dimensionSet)
+                        @foreach (var d in dimensionSet[1])
                         {
                             <option value="@d">@d</option>
                         }
                     </select>
-                </fieldset>
-                <fieldset>
                     <div class="submit-wrap">
-                        <button class="train-submit scButton">Train One Dimension</button>
+                        <button class="ranking-submit scButton">Ranking</button>
+                        <button class="train-submit scButton">Train</button>
                     </div>
                 </fieldset>
             </div>

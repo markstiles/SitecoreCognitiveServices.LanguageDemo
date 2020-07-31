@@ -1,4 +1,5 @@
-﻿using SitecoreCognitiveServices.Foundation.MSSDK.Decision.Models.Personalizer;
+﻿using LanguageDemo.Web.Services.Models;
+using SitecoreCognitiveServices.Foundation.MSSDK.Decision.Models.Personalizer;
 using SitecoreCognitiveServices.Foundation.SCSDK.Services.MSSDK.Decision;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,15 @@ namespace LanguageDemo.Web.Services
 {
     public interface ITrainingService
     {
-        void TrainOneDimension(string dimensionOne);
-        void TrainTwoDimensions(string dimensionOne, string dimensionTwo);
-        void TrainThreeDimensions(string dimensionOne, string dimensionTwo, string dimensionThree);
+        List<TrainingResult> TrainOneDimension();
+        List<TrainingResult> TrainTwoDimensions();
+        List<TrainingResult> TrainThreeDimensions();
     }
 
     public class TrainingService : ITrainingService
     {
+        #region Constructor
+
         protected readonly IPersonalizerService PersonalizerService;
         protected readonly IActionService ActionService;
 
@@ -27,7 +30,9 @@ namespace LanguageDemo.Web.Services
             ActionService = actionService;
 
         }
-        
+
+        #endregion
+
         //how many clicks does it take to reach 10, 20, 30... 95 percent accuracy
 
         //train with different action sets
@@ -42,132 +47,138 @@ namespace LanguageDemo.Web.Services
         //train by two dimensions (page location and time of day)
 
         //train one dimension (time of day)
-        public void TrainOneDimension(string dimensionOne)
+        
+        public List<TrainingResult> TrainOneDimension()
         {
+            //for 10000 click events
 
+            //click 1000 times on one value
+
+            //log confidence as the clicks progress
+
+
+            var results = new List<TrainingResult>();
+            var dimSet = Constants.Dimensions.ContextFeatures.PageLocationFeatureList;
+            var preferredValue = Constants.Dimensions.ContextFeatures.PageLocationFeatures.Banner;
 
             var rewardCount = 0;
+            var rewardLimit = 10;
+            var runLimit = 10 * rewardLimit;
+
             var rankResponse = new RankResponse();
-            for (int j = 0; j < 10000; j++)
+            for (int j = 0; j < runLimit; j++)
             {
-                var tod = timeOfDayFeatures[j % 4];
-                var t = "";
-                if (tod == "morning")
-                    t = "sweet";
-                else if (tod == "afternoon")
-                    t = "bland";
-                else if (tod == "evening")
-                    t = "salty";
-                else if (tod == "night")
-                    t = "savory";
+                if (rewardCount >= rewardLimit)
+                    break; 
+
+                var value = dimSet[j % dimSet.Count];
 
                 var request = new RankRequest
                 {
-                    actions = ActionService.GetActions(),
-                    contextFeatures = new List<object>() {
-                                new { time = tod },
-                                new { taste = t }
-                            },
+                    actions = ActionService.GetComponentActions(),
+                    contextFeatures = new List<object>()
+                    {
+                        new { pagelocation = value }
+                    },
                     excludedActions = new List<string>(),
                     eventId = Guid.NewGuid().ToString(),
                     deferActivation = false
                 };
 
-                // Rank the actions
                 rankResponse = PersonalizerService.Rank(request);
-
-                var isJuice = rankResponse.rewardActionId == "juice";
-                var isIceCream = rankResponse.rewardActionId == "ice cream";
-                var isSalad = rankResponse.rewardActionId == "salad";
-                var isPasta = rankResponse.rewardActionId == "pasta";
-                var isMorning = tod == "morning";
-                var isAfternoon = tod == "afternoon";
-                var isEvening = tod == "evening";
-                var isNight = tod == "night";
-
                 PersonalizerService.ActivateEvent(rankResponse.eventId);
 
-                if (isMorning && isJuice)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else if (isAfternoon && isSalad)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else if (isEvening && isPasta)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else if (isNight && isIceCream)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else
-                    PersonalizerService.Reward(rankResponse.eventId, 0);
-            }
-
-            Sitecore.Diagnostics.Log.Info($"RankController Reward Count: {rewardCount}", this);
-            foreach (var j in rankResponse.ranking)
-            {
-                Sitecore.Diagnostics.Log.Info($"RankController Ranking: {j.id} - {j.probability}", this);
-            }
-        }
-
-        public void TrainTwoDimensions(string dimensionOne, string dimensionTwo)
-        {
-            var rewardCount = 0;
-            var rankResponse = new RankResponse();
-            for (int j = 0; j < 10000; j++)
-            {
-                var tod = timeOfDayFeatures[j % 4];
-                var t = "";
-                if (tod == "morning")
-                    t = "sweet";
-                else if (tod == "afternoon")
-                    t = "bland";
-                else if (tod == "evening")
-                    t = "salty";
-                else if (tod == "night")
-                    t = "savory";
-
-                var request = new RankRequest
+                //if it recommends media for the banner
+                var shouldReward = Constants.Dimensions.ContextFeatures.PageLocationFeatures.Banner == value &&  
+                    Constants.ContentIds.MediaBanners.Contains(rankResponse.rewardActionId);
+                if (shouldReward)
                 {
-                    actions = ActionService.GetActions(),
-                    contextFeatures = new List<object>() {
-                                new { time = tod },
-                                new { taste = t }
-                            },
-                    excludedActions = new List<string>(),
-                    eventId = Guid.NewGuid().ToString(),
-                    deferActivation = false
-                };
-
-                // Rank the actions
-                rankResponse = PersonalizerService.Rank(request);
-
-                var isJuice = rankResponse.rewardActionId == "juice";
-                var isIceCream = rankResponse.rewardActionId == "ice cream";
-                var isSalad = rankResponse.rewardActionId == "salad";
-                var isPasta = rankResponse.rewardActionId == "pasta";
-                var isMorning = tod == "morning";
-                var isAfternoon = tod == "afternoon";
-                var isEvening = tod == "evening";
-                var isNight = tod == "night";
-
-                PersonalizerService.ActivateEvent(rankResponse.eventId);
-
-                if (isMorning && isJuice)
+                    rewardCount++;
                     PersonalizerService.Reward(rankResponse.eventId, 1);
-                else if (isAfternoon && isSalad)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else if (isEvening && isPasta)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else if (isNight && isIceCream)
-                    PersonalizerService.Reward(rankResponse.eventId, 1);
-                else
-                    PersonalizerService.Reward(rankResponse.eventId, 0);
+                }
+
+                if (rewardCount % 100 == 0)
+                {
+                    var preferredItem = rankResponse.ranking.Where(a => a.id.Equals(preferredValue)).First();
+                    var pair = new TrainingResult {
+                        Clicks = j,
+                        Confidence = preferredItem.probability,
+                        RewardActionId = rankResponse.rewardActionId,
+                        Rewarded = shouldReward
+                    };
+                    results.Add(pair);
+                }
             }
-
-            Sitecore.Diagnostics.Log.Info($"RankController Reward Count: {rewardCount}", this);
-            foreach (var j in rankResponse.ranking)
-            {
-                Sitecore.Diagnostics.Log.Info($"RankController Ranking: {j.id} - {j.probability}", this);
-            }
+            
+            return results;
         }
 
-        public void TrainThreeDimensions(string dimensionOne, string dimensionTwo, string dimensionThree) { }
+        public List<TrainingResult> TrainTwoDimensions()
+        {
+            //    var rewardCount = 0;
+            //    var rankResponse = new RankResponse();
+            //    for (int j = 0; j < 10000; j++)
+            //    {
+            //        var tod = timeOfDayFeatures[j % 4];
+            //        var t = "";
+            //        if (tod == "morning")
+            //            t = "sweet";
+            //        else if (tod == "afternoon")
+            //            t = "bland";
+            //        else if (tod == "evening")
+            //            t = "salty";
+            //        else if (tod == "night")
+            //            t = "savory";
+
+            //        var request = new RankRequest
+            //        {
+            //            actions = ActionService.GetActions(),
+            //            contextFeatures = new List<object>() {
+            //                        new { time = tod },
+            //                        new { taste = t }
+            //                    },
+            //            excludedActions = new List<string>(),
+            //            eventId = Guid.NewGuid().ToString(),
+            //            deferActivation = false
+            //        };
+
+            //        // Rank the actions
+            //        rankResponse = PersonalizerService.Rank(request);
+
+            //        var isJuice = rankResponse.rewardActionId == "juice";
+            //        var isIceCream = rankResponse.rewardActionId == "ice cream";
+            //        var isSalad = rankResponse.rewardActionId == "salad";
+            //        var isPasta = rankResponse.rewardActionId == "pasta";
+            //        var isMorning = tod == "morning";
+            //        var isAfternoon = tod == "afternoon";
+            //        var isEvening = tod == "evening";
+            //        var isNight = tod == "night";
+
+            //        PersonalizerService.ActivateEvent(rankResponse.eventId);
+
+            //        if (isMorning && isJuice)
+            //            PersonalizerService.Reward(rankResponse.eventId, 1);
+            //        else if (isAfternoon && isSalad)
+            //            PersonalizerService.Reward(rankResponse.eventId, 1);
+            //        else if (isEvening && isPasta)
+            //            PersonalizerService.Reward(rankResponse.eventId, 1);
+            //        else if (isNight && isIceCream)
+            //            PersonalizerService.Reward(rankResponse.eventId, 1);
+            //        else
+            //            PersonalizerService.Reward(rankResponse.eventId, 0);
+            //    }
+
+            //    Sitecore.Diagnostics.Log.Info($"RankController Reward Count: {rewardCount}", this);
+            //    foreach (var j in rankResponse.ranking)
+            //    {
+            //        Sitecore.Diagnostics.Log.Info($"RankController Ranking: {j.id} - {j.probability}", this);
+            //    }
+            return new List<TrainingResult>();
+        }
+
+        public List<TrainingResult> TrainThreeDimensions()
+        {
+            return new List<TrainingResult>();
+        }
     }
 }

@@ -122,6 +122,9 @@
     <Compile Include="Intents\QuitIntent.cs" />
     <Compile Include="Intents\EventSearchIntent.cs" />
     <Compile Include="Intents\RegistrationIntent.cs" />
+    <Compile Include="Services\Models\TrainingResult.cs" />
+    <Compile Include="Services\TrainingService.cs" />
+    <Compile Include="Services\ActionService.cs" />
     <Compile Include="Services\EventSearchService.cs" />
     <Compile Include="Services\UrlService.cs" />
     <Compile Include="Statics\Translator.cs" />
